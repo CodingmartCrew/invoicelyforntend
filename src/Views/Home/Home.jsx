@@ -10,7 +10,7 @@ const Home = () => {
       setTableData((prev) => {
         let arr = [...prev.tableData,
           {
-            col1: "",
+            col1: prev.tableData.length+1,
             col2: "",
             col3: "",
             col4: "",
@@ -42,35 +42,35 @@ const Home = () => {
     total: "Total (€)",
     tableData: [
       {
-        col1: "",
+        col1: 1,
         col2: "Supporting of in-house project (hours worked)",
         col3: "40",
         col4: "125.00",
         col5: "5000.00",
       },
       {
-        col1: "",
+        col1: 2,
         col2: "",
         col3: "",
         col4: "",
         col5: "",
       },
       {
-        col1: "",
+        col1: 3,
         col2: "",
         col3: "",
         col4: "",
         col5: "",
       },
       {
-        col1: "",
+        col1: 4,
         col2: "",
         col3: "",
         col4: "",
         col5: "",
       },
       {
-        col1: "",
+        col1: 5,
         col2: "",
         col3: "",
         col4: "",
@@ -121,7 +121,10 @@ const Home = () => {
             </div>
           </div>
           <div className="body-Right">
-            <PdfLayout tableData={tableData} setTableData={setTableData} />
+            <PdfLayout 
+            tableData={tableData} 
+            setTableData={setTableData}
+            />
           </div>
         </div>
       </div>

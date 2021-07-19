@@ -1,10 +1,10 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import "./layout.scss";
 import { TextInput, TextAreaInput,Tablecomponent } from "../inputboxes/inputs";
 import { Row, Col, Container } from "react-bootstrap";
 
-const PdfLayout = ({tableData,setTableData}) => {
-
+const PdfLayout = ({ tableData,setTableData }) => {
+  
   const [data, setData] = useState({
     companyname: "Your Company Name",
     pdftitle: "INVOICE",

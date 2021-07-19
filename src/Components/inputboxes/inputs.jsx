@@ -1,7 +1,7 @@
-import React from "react";
+import {React,useState,useEffect} from "react";
 import "./input.scss";
 
-const TextInput = ({ name, side, color, type, value, setValue }) => {
+const TextInput = ({ id, name, side, color, row, type, value, setValue }) => {
   return (
     <div className="input">
       <input
@@ -16,18 +16,20 @@ const TextInput = ({ name, side, color, type, value, setValue }) => {
             ${color === "transparent" ? "transparent" : ""}
         `}
         type="text"
-        value={value}
+        defaultValue={value}
         style={{
           textAlign: ` ${side === "right" ? "right " : "left "}
           `,
         }}
         onChange={(e) => {
-          setValue((prev) => {
-            return {
-              ...prev,
-              [name]: e.target.value,
-            };
-          });
+          row
+            ? setValue(name,e.target.value, id-1)
+            : setValue((prev) => {
+                return {
+                  ...prev,
+                  [name]: e.target.value,
+                };
+              });
         }}
       />
     </div>
@@ -53,7 +55,19 @@ const TextAreaInput = ({ name, value, setValue }) => {
 };
 
 const Tablecomponent = ({ data, setData }) => {
-  // console.log(data);
+
+  const rowChange = ( name, value, id) => {
+    console.log("row ",id, name);
+    console.log(data);
+    setData((prev)=>{
+      let dataCopy = prev;
+      dataCopy.tableData[id][name] = value;
+      dataCopy.tableData[id].col5 = dataCopy.tableData[id].col3 * dataCopy.tableData[id].col4;
+      console.log( dataCopy.tableData[id].col5)
+      return dataCopy;
+    }) 
+  };
+
   return (
     <div className="table">
       <table className="table table-bordered">
@@ -103,53 +117,45 @@ const Tablecomponent = ({ data, setData }) => {
                 type="bold"
                 color="transparent"
               />
-            </th>   
+            </th>
           </tr>
         </thead>
         <tbody>
-          {data.tableData.map((row,index) => {
+          {data.tableData.map((row, index) => {
             return (
               <tr key={index}>
+                <td>{row.col1}</td>
                 <td>
                   <TextInput
-                    name={'col1'}
-                    value={index+1}
-                    setValue={setData}
-                    color="transparent"
-                  />
-                </td>
-                <td>
-                  <TextInput
+                    id={row.col1}
                     name={"col2"}
                     value={row.col2}
-                    setValue={setData}
+                    setValue={rowChange}
                     color="transparent"
+                    row={true}
                   />
                 </td>
                 <td>
                   <TextInput
+                    id={row.col1}
                     name={"col3"}
                     value={row.col3}
-                    setValue={setData}
+                    setValue={rowChange}
                     color="transparent"
+                    row={true}
                   />
                 </td>
                 <td>
                   <TextInput
+                    id={row.col1}
                     name={"col4"}
                     value={row.col4}
-                    setValue={setData}
+                    setValue={rowChange}
                     color="transparent"
+                    row={true}
                   />
                 </td>
-                <td>
-                  <TextInput
-                    name={"col5"}
-                    value={row.col5}
-                    setValue={setData}
-                    color="transparent"
-                  />
-                </td>
+                <td>{row.col5} </td>
               </tr>
             );
           })}
