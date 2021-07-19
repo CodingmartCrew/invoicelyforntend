@@ -5,7 +5,7 @@ import Login from "./Views/Login/Login"
 import Signup from './Views/Signup/Signup';
 import Home from "./Views/Home/Home";
 import Navbar from "./Components/Navbar/Navbar"
-import Default from "./Default"
+import Default from "./Views/Default"
 import "./App.css"
 function App() {
   return (

@@ -1,4 +1,4 @@
-import {React,useState,useEffect} from "react";
+import { React } from "react";
 import "./input.scss";
 
 const TextInput = ({ id, name, side, color, row, type, value, setValue }) => {
@@ -23,7 +23,7 @@ const TextInput = ({ id, name, side, color, row, type, value, setValue }) => {
         }}
         onChange={(e) => {
           row
-            ? setValue(name,e.target.value, id-1)
+            ? setValue(name, e.target.value, id - 1)
             : setValue((prev) => {
                 return {
                   ...prev,
@@ -54,18 +54,47 @@ const TextAreaInput = ({ name, value, setValue }) => {
   );
 };
 
-const Tablecomponent = ({ data, setData }) => {
+const Tablecomponent = ({ tableData, setTableData }) => {
+  const numberPattern = /\d+/g;
+  const setTax = (name,value) => {
+    setTableData((prev) => {
+      let taxPer = value ? value.match(numberPattern)?.join(''):0;
+      let taxamt = parseFloat((prev.subtotal / 100) * parseInt(taxPer));
+      return{
+        ...prev,
+        taxamt : taxamt,
+        nettotal : parseFloat(prev.subtotal + (taxamt?taxamt:0)),
+        taxper: parseInt(taxPer),
+      };
+    });
+  };
 
-  const rowChange = ( name, value, id) => {
-    console.log("row ",id, name);
-    console.log(data);
-    setData((prev)=>{
-      let dataCopy = prev;
-      dataCopy.tableData[id][name] = value;
-      dataCopy.tableData[id].col5 = dataCopy.tableData[id].col3 * dataCopy.tableData[id].col4;
-      console.log( dataCopy.tableData[id].col5)
-      return dataCopy;
-    }) 
+  const rowChange = (name, value, id) => {
+    try {
+      setTableData((prev) => {
+        let dataCopy = prev;
+        dataCopy.tableData[id][name] = value;
+        if (name !== "col2") {
+          dataCopy.tableData[id].col5 = isNaN(
+            parseFloat(dataCopy.tableData[id].col3)
+          )
+            ? 1 * dataCopy.tableData[id].col4
+            : dataCopy.tableData[id].col3 * dataCopy.tableData[id].col4;
+          let total = dataCopy.tableData.reduce((a, b) => {
+            return { col5: a.col5 + b.col5 };
+          });
+          dataCopy.subtotal = total.col5;
+          dataCopy.taxamt = parseFloat((total.col5 / 100) * dataCopy.taxper);
+          dataCopy.nettotal = parseFloat(dataCopy.subtotal + dataCopy.taxamt);
+        }
+        return {
+          ...prev,
+          tableData: [...dataCopy.tableData],
+        };
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -76,8 +105,8 @@ const Tablecomponent = ({ data, setData }) => {
             <th scope="col" style={{ width: "50px" }}>
               <TextInput
                 name={"sno"}
-                value={data.sno}
-                setValue={setData}
+                value={tableData.sno}
+                setValue={setTableData}
                 type="bold"
                 color="transparent"
               />
@@ -85,8 +114,8 @@ const Tablecomponent = ({ data, setData }) => {
             <th scope="col" style={{ width: "300px" }}>
               <TextInput
                 name={"itemdescription"}
-                value={data.itemdescription}
-                setValue={setData}
+                value={tableData.itemdescription}
+                setValue={setTableData}
                 type="bold"
                 color="transparent"
               />
@@ -94,8 +123,8 @@ const Tablecomponent = ({ data, setData }) => {
             <th scope="col">
               <TextInput
                 name={"quantity"}
-                value={data.quantity}
-                setValue={setData}
+                value={tableData.quantity}
+                setValue={setTableData}
                 type="bold"
                 color="transparent"
               />
@@ -103,8 +132,8 @@ const Tablecomponent = ({ data, setData }) => {
             <th scope="col">
               <TextInput
                 name={"unitprice"}
-                value={data.unitprice}
-                setValue={setData}
+                value={tableData.unitprice}
+                setValue={setTableData}
                 type="bold"
                 color="transparent"
               />
@@ -112,8 +141,8 @@ const Tablecomponent = ({ data, setData }) => {
             <th scope="col">
               <TextInput
                 name={"total"}
-                value={data.total}
-                setValue={setData}
+                value={tableData.total}
+                setValue={setTableData}
                 type="bold"
                 color="transparent"
               />
@@ -121,10 +150,12 @@ const Tablecomponent = ({ data, setData }) => {
           </tr>
         </thead>
         <tbody>
-          {data.tableData.map((row, index) => {
+          {tableData.tableData.map((row, index) => {
             return (
               <tr key={index}>
-                <td>{row.col1}</td>
+                <td className="blocked" title="Auto Generated">
+                  {row.col1}
+                </td>
                 <td>
                   <TextInput
                     id={row.col1}
@@ -155,14 +186,64 @@ const Tablecomponent = ({ data, setData }) => {
                     row={true}
                   />
                 </td>
-                <td>{row.col5} </td>
+                <Blocked value={row.col5} />
               </tr>
             );
           })}
+          <tr>
+            <td colSpan="4">
+              <TextInput
+                name={"subtotaltitle"}
+                value={tableData.subtotaltitle}
+                setValue={rowChange}
+                type="bold"
+                color="transparent"
+              />
+            </td>
+            <Blocked value={tableData.subtotal} />
+          </tr>
+          <tr>
+            <td title="Include tax Percentage here for calculation" colSpan="4">
+              <TextInput
+                name={"taxper"}
+                value={`Sales Tax (${tableData.taxper}%)`}
+                setValue={setTax}
+                type="bold"
+                color="transparent"
+                row={true}
+              />
+            </td>
+            <Blocked value={tableData.taxamt} />
+          </tr>
+          <tr>
+            <td colSpan="4">
+              <TextInput
+                name={"nettotaltitle"}
+                value={tableData.nettotaltitle}
+                setValue={rowChange}
+                type="bold"
+                color="transparent"
+              />
+            </td>
+            <Blocked value={tableData.nettotal} />
+          </tr>
         </tbody>
       </table>
     </div>
   );
 };
 
-export { TextInput, TextAreaInput, Tablecomponent };
+const extractNum = (data) => {
+  var numberPattern = /\d+/g;
+  return data.match(numberPattern)?data.match(numberPattern):20;
+};
+
+const Blocked = ({ value }) => {
+  return (
+    <td className="blocked" title="Auto Generated">
+      {value ? value.toFixed(2) : "-"}
+    </td>
+  );
+};
+
+export { TextInput, TextAreaInput, Tablecomponent, Blocked, extractNum };

@@ -1,9 +1,12 @@
-import { React, useState } from "react";
+import { React, useState,useRef } from "react";
 import "./home.scss";
 import Button from "@material-ui/core/Button";
 import PdfLayout from "../../Components/PdfLayout/PdfLayout";
+import ReactToPdf from "react-to-pdf";
 
 const Home = () => {
+
+  const ref = useRef(null);
 
   const rowHandler = (action) => {
     if (action === "add") {
@@ -40,46 +43,22 @@ const Home = () => {
     quantity: "Quantity",
     unitprice: "Unit price (€)",
     total: "Total (€)",
+    subtotaltitle: 'SubTotal',
+    subtotal: 5000,
+    taxamt: 1000,
+    taxper: 20,
+    nettotaltitle: "total",
+    nettotal: 6000,
     tableData: [
       {
         col1: 1,
         col2: "Supporting of in-house project (hours worked)",
-        col3: "40",
-        col4: "125.00",
-        col5: "5000.00",
-      },
-      {
-        col1: 2,
-        col2: "",
-        col3: "",
-        col4: "",
-        col5: "",
-      },
-      {
-        col1: 3,
-        col2: "",
-        col3: "",
-        col4: "",
-        col5: "",
-      },
-      {
-        col1: 4,
-        col2: "",
-        col3: "",
-        col4: "",
-        col5: "",
-      },
-      {
-        col1: 5,
-        col2: "",
-        col3: "",
-        col4: "",
-        col5: "",
+        col3: 40,
+        col4: 125,
+        col5: 5000,
       },
     ],
   });
-
-
 
   return (
     <>
@@ -93,10 +72,14 @@ const Home = () => {
             </div>
             <div className="card invoiceto">
               <h5>Generate invoice</h5>
-              <br />
-              <Button variant="outlined" className="generate">
+
+    <ReactToPdf targetRef={ref} x={-12} filename="invoice.pdf">
+        {({toPdf}) => (
+              <Button  onClick={toPdf} variant="outlined" className="generate">
                 Get PDF
               </Button>
+        )}
+    </ReactToPdf>
             </div>
             <div className="card invoiceto">
               <h5>Resize table</h5>
@@ -120,7 +103,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="body-Right">
+          <div className="body-Right" ref={ref}>
             <PdfLayout 
             tableData={tableData} 
             setTableData={setTableData}
