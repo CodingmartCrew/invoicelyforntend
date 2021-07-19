@@ -1,0 +1,54 @@
+.home {
+  color: white;
+  h5 {
+    font-size: 13px !important;
+    font-weight: bold !important;
+    padding: 5px 10px;
+  }
+  .invoice-body{
+    display: flex;
+    width: 100%;
+    .body-Right{
+        width:70%;
+        min-height: 100vh ;
+        color: black;
+        margin: 0 auto;
+    }
+  }
+  .invoiceto {
+    padding: 5px 10px;
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid black;
+    background-color: #252935;
+    width: 185px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px !important;
+    p {
+      margin-bottom: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: skyblue !important;
+      font-weight: bold !important;
+      cursor: pointer;
+      &:hover {
+          color: white !important;
+      }
+    }
+  }
+  .cardBody {
+    height: 90vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-content: space-evenly;
+  }
+  .generate {
+    border-radius: 15px;
+    width: 100%;
+    background-color: #f7653e;
+    color: white;
+    font-weight: bold;
+    &:hover {
+      background-color: #f7653e;
+    }
+  }
+}

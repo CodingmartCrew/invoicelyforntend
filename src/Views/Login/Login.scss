@@ -1,0 +1,75 @@
+.login-container{
+    .invoicelylogo{
+        width:160px;
+    }
+    .invoice-logo{
+        padding-top: 50px;
+        display:flex ;
+        justify-content: center ;
+    }
+    .login-card{
+        margin:0 auto;
+        float:none;
+        background: #f3f3f4;
+        max-height: max-content;
+        margin-top: 50px;
+        margin-bottom: 30px;
+    }
+    .card-title{
+        color:black;
+        font-family: 'Roboto', sans-serif;
+        font-weight:100;
+        font-size:x-large;
+        display:flex ;
+        justify-content: center ;
+        padding-top: 30px;
+    }
+    .login-form{
+        width: 80%;
+        float:none;
+        margin:0 auto;
+        margin-bottom: 20px;
+    }
+    .login-email{
+        margin-top:10px;
+    }
+    .form-label{
+        font-family: 'Roboto', sans-serif;
+        font-weight:100;
+    }
+    ::-webkit-input-placeholder { 
+        font-family: 'Roboto', sans-serif;
+        font-weight:100;
+      }
+      .login-btn{
+        background-color: #f7703f;
+        color: white;
+        font-family: Arial;
+        text-align: center;
+        font-size: 15px;
+        display: block;
+        margin: 0 auto;
+        padding: 10px  25px;
+    }
+    .login-not{
+        font-family: 'Dancing Script', cursive;
+        color:white;
+        font-size:20px;
+        font-weight:bold;
+        text-align: center;
+    }
+    .register-btn{
+        background-color: #292d3a;
+        color: white;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight:bold; 
+        padding:8px 15px;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;
+        text-align: center;
+        display: block;
+        margin: 0 auto;
+        margin-top: 10px;
+        margin-bottom:50px;
+    }
+}

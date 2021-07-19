@@ -1,0 +1,59 @@
+$inputColor1: rgb(254, 255, 189);
+$tablerowColorPrimary: #0000001a;
+$tablerowColorSecondary: #ffffff;
+.input {
+  font-family: Arial, Helvetica, sans-serif;
+  textarea,
+  input {
+    width: 100%;
+    font-size: 15px;
+    border: none;
+    &:focus {
+      outline: none;
+      background-color: $inputColor1;
+    }
+  }
+  textarea {
+    padding: 10px 20px;
+    min-height: 200px;
+    text-align: left;
+    white-space: wrap;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  .title {
+    height: 40px;
+    font-weight: bolder;
+    font-size: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .bold {
+    font-weight: bold;
+  }
+  .transparent {
+    background-color: transparent;
+  }
+}
+
+.table {
+  .secondary {
+    background-color: $tablerowColorPrimary;
+  }
+  table {
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    tbody {
+      tr {
+        &:nth-child(2n + 1) {
+          background-color: $tablerowColorSecondary;
+        }
+        &:nth-child(2n + 2) {
+          background-color: $tablerowColorPrimary;
+        }
+      }
+    }
+  }
+}
