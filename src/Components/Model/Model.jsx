@@ -30,7 +30,7 @@ export default function Model({ generate }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle className="text-center" id="alert-dialog-title">
           {"Want to save your invoices? "}
           <span className="closeButton" onClick={handleClose}>
             x
