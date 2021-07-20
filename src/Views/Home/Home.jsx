@@ -1,12 +1,27 @@
 import { React, useState,useRef } from "react";
 import "./home.scss";
-import Button from "@material-ui/core/Button";
+import Model from '../../Components/Model/Model';
 import PdfLayout from "../../Components/PdfLayout/PdfLayout";
 import ReactToPdf from "react-to-pdf";
 
 const Home = () => {
 
   const ref = useRef(null);
+
+  const [invoices, setInvoices] = useState([
+    {
+      id: 1,
+      title: "invoice1",
+    },
+    {
+      id: 2,
+      title: "invoice2",
+    },
+    {
+      id: 3,
+      title: "invoice3",
+    },
+  ])
 
   const rowHandler = (action) => {
     if (action === "add") {
@@ -66,8 +81,17 @@ const Home = () => {
         <div className="invoice-body">
           <div className="col-md-3 cardBody ">
             <div className="card invoiceto">
+              <h5>Your invoices</h5>
+                  {
+                    invoices.map((invoice)=>{
+                      return <>
+                      <p key={invoice.id}>{invoice.title}</p>
+                      </>
+                    })
+                  }
+            </div>
+            <div className="card invoiceto">
               <h5>invoiceto.me</h5>
-              <br />
               <h5>Edit the template to make invoice →</h5>
             </div>
             <div className="card invoiceto">
@@ -75,9 +99,7 @@ const Home = () => {
 
     <ReactToPdf targetRef={ref} x={-12} filename="invoice.pdf">
         {({toPdf}) => (
-              <Button  onClick={toPdf} variant="outlined" className="generate">
-                Get PDF
-              </Button>
+              <Model generate={toPdf} />
         )}
     </ReactToPdf>
             </div>
