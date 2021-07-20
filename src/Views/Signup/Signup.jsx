@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactComponent as Invoicelogo } from "../../assests/invoicely.svg";
-import {useHistory} from "react-router-dom"
+import { useHistory } from "react-router-dom";
 import "./Signup.scss";
 function Signup() {
-    let history =useHistory();
+  let history = useHistory();
+
+  const [email, setEmail] = useState(null)
+  const [password, setPassword] = useState(null)
+  const [pswdSame, setPswdSame] = useState(null)
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    console.log("submitting sigin up");
+    console.log(email, password, pswdSame);
+  };
+
   return (
     <React.Fragment>
       <div className="signupcom">
@@ -18,36 +29,39 @@ function Signup() {
           </div>
           <div className="card signup-card" style={{ width: "350px" }}>
             <div className="card-title">Sign Up</div>
-            <form className="signup-form">
-              <div class="mb-3 signup-email">
-                <label class="form-label">
+            <form className="signup-form" onSubmit={(e) => submitHandler(e)}>
+              <div className="mb-3 signup-email">
+                <label className="form-label">
                   Email address <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="email"
-                  class="form-control"
+                  className="form-control"
+                  onChange={(e)=>{setEmail(e.target.value)}}
                   placeholder="Email address"
                   required
                 />
               </div>
-              <div class="mb-3">
-                <label class="form-label">
+              <div className="mb-3">
+                <label className="form-label">
                   Password <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="password"
-                  class="form-control"
+                  className="form-control"
+                  onChange={(e)=>{setPassword(e.target.value)}}
                   required
                   placeholder="Password"
                 />
               </div>
-              <div class="mb-3">
-                <label class="form-label">
+              <div className="mb-3">
+                <label className="form-label">
                   Password (Confirm) <span style={{ color: "red" }}>*</span>
                 </label>
                 <input
                   type="password"
-                  class="form-control"
+                  className="form-control"
+                  onChange={(e)=>{setPswdSame(e.target.value === password)}}
                   required
                   placeholder="Password must match"
                 />
@@ -63,15 +77,17 @@ function Signup() {
               </button>
             </form>
           </div>
-          <div className="signup-already">
-          Already a member?
-          </div>
+          <div className="signup-already">Already a member?</div>
           <div className="signup-login-btn">
-          <button type="submit" class="btn  Login-btn" onClick={()=>{
-              history.push('/login')
-          }}>
-                Login
-              </button>
+            <button
+              type="submit"
+              className="btn  Login-btn"
+              onClick={() => {
+                history.push("/login");
+              }}
+            >
+              Login
+            </button>
           </div>
         </div>
       </div>

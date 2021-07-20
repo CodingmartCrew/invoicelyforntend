@@ -1,8 +1,10 @@
-import { React, useState,useRef } from "react";
+import { React,useEffect, useState,useRef } from "react";
 import "./home.scss";
 import Model from '../../Components/Model/Model';
 import PdfLayout from "../../Components/PdfLayout/PdfLayout";
 import ReactToPdf from "react-to-pdf";
+import axios from "axios";
+import { backend_url } from "../../services/url";
 
 const Home = () => {
 
@@ -74,6 +76,19 @@ const Home = () => {
       },
     ],
   });
+
+  useEffect(()=>{
+    const fetchData= async ()=>{
+      await axios.get(`${backend_url}/api/invoice/all`).then((res)=>{
+        if(res.error){
+          console.log(res.error);
+        }else{
+          console.log(res);
+        }
+      });
+    }
+    fetchData();
+  },[])
 
   return (
     <>
