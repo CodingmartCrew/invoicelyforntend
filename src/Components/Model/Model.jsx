@@ -48,7 +48,7 @@ export default function Model({ data, tableData,signedIn,generate }) {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle className="text-center" id="alert-dialog-title">
           {"Want to save your invoices? "}
           <span className="closeButton" onClick={handleClose}>
             x
@@ -57,12 +57,12 @@ export default function Model({ data, tableData,signedIn,generate }) {
 
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            By signing in save unlimited online invoices for your later needs...
-            It's completely free
+           {!signedIn ? <p>By signing in save unlimited online invoices for your later needs...
+            It's completely free</p> : <p>Download  your pdf for free</p> }
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
+          {!signedIn && <Button
             variant="outlined"
             onClick={() => {
               history.push("/signup");
@@ -70,7 +70,7 @@ export default function Model({ data, tableData,signedIn,generate }) {
             color="primary"
           >
             Sigin for free
-          </Button>
+          </Button>}
           <Button
             variant="outlined"
             onClick={() => {
