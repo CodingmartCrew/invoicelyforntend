@@ -1,18 +1,39 @@
-import React,{ useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as Invoicelogo } from "../../assests/invoicely.svg";
 import "./Login.scss";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { backend_url } from "../../services/url";
 
-function Login() {
+function Login({ signedIn, setSignedIn }) {
   let history = useHistory();
 
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
+  useEffect(() => {
+    signedIn && history.push("/")
+  })
 
-  const submitHandler = (event) => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [error, setError] = useState(null);
+
+  const submitHandler = async (event) => {
     event.preventDefault();
     console.log("submitting");
-    console.log(email,password);
+    console.log(email, password);
+    await axios.post(`${backend_url}/api/user/login`,{
+      "email": email,
+      "password": password
+    }).then((res) => {
+        setError(null);
+        console.log(JSON.parse(res.data.data).email);
+        localStorage.setItem("invoice_use_data",JSON.parse(res.data.data).email)
+        setSignedIn(true)
+        history.push("/");
+    }).catch((err)=>{
+      console.log(err);
+      setError("Invalid email/password");
+    })
+
   };
 
   return (
@@ -24,6 +45,7 @@ function Login() {
           </div>
           <div className="card login-card" style={{ width: "350px" }}>
             <div className="card-title">Login in to your account</div>
+            <p className="text-center text-danger">{error}</p>
             <form className="login-form" onSubmit={(e) => submitHandler(e)}>
               <div className="mb-3 login-email">
                 <label className="form-label">
@@ -33,7 +55,9 @@ function Login() {
                   type="email"
                   className="form-control"
                   placeholder="Email address"
-                  onChange={(e)=>{setEmail(e.target.value)}}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   required
                 />
               </div>
@@ -44,7 +68,9 @@ function Login() {
                 <input
                   type="password"
                   className="form-control"
-                  onChange={(e)=>{setPassword(e.target.value)}}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   required
                   placeholder="Password"
                 />

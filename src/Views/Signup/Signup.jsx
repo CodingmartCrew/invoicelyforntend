@@ -1,18 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ReactComponent as Invoicelogo } from "../../assests/invoicely.svg";
 import { useHistory } from "react-router-dom";
 import "./Signup.scss";
-function Signup() {
+import axios from "axios";
+import { backend_url } from "../../services/url";
+function Signup({ signedIn }) {
   let history = useHistory();
+  const [error, setError] = useState(null);
 
-  const [email, setEmail] = useState(null)
-  const [password, setPassword] = useState(null)
-  const [pswdSame, setPswdSame] = useState(null)
+  useEffect(() => {
+    signedIn && history.push("/");
+  });
 
-  const submitHandler = (event) => {
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [pswdSame, setPswdSame] = useState(null);
+
+  const submitHandler = async (event) => {
     event.preventDefault();
     console.log("submitting sigin up");
     console.log(email, password, pswdSame);
+    if (pswdSame) {
+      await axios
+        .post(`${backend_url}/api/user/create`, {
+          email: email,
+          password: password,
+        })
+        .then((res) => {
+          if (res.error) {
+            console.log(res);
+          } else {
+            console.log(JSON.parse(res.data.data));
+            history.push("/login");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setError("Email already exist");
+        });
+    }
   };
 
   return (
@@ -29,6 +55,7 @@ function Signup() {
           </div>
           <div className="card signup-card" style={{ width: "350px" }}>
             <div className="card-title">Sign Up</div>
+            <p className="text-center text-danger">{error}</p>
             <form className="signup-form" onSubmit={(e) => submitHandler(e)}>
               <div className="mb-3 signup-email">
                 <label className="form-label">
@@ -37,7 +64,9 @@ function Signup() {
                 <input
                   type="email"
                   className="form-control"
-                  onChange={(e)=>{setEmail(e.target.value)}}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   placeholder="Email address"
                   required
                 />
@@ -49,7 +78,9 @@ function Signup() {
                 <input
                   type="password"
                   className="form-control"
-                  onChange={(e)=>{setPassword(e.target.value)}}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   required
                   placeholder="Password"
                 />
@@ -61,7 +92,9 @@ function Signup() {
                 <input
                   type="password"
                   className="form-control"
-                  onChange={(e)=>{setPswdSame(e.target.value === password)}}
+                  onChange={(e) => {
+                    setPswdSame(e.target.value === password);
+                  }}
                   required
                   placeholder="Password must match"
                 />
@@ -72,7 +105,7 @@ function Signup() {
                 <a href="https://invoicely.com/legal/terms">Terms of Use</a> and{" "}
                 <a href="https://invoicely.com/legal/privacy">Privacy Policy</a>
               </div>
-              <button type="submit" class="btn  signup-btn">
+              <button type="submit" className="btn  signup-btn">
                 Proceed
               </button>
             </form>

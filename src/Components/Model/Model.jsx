@@ -7,12 +7,30 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "./model.scss";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { backend_url } from "../../services/url";
 
-export default function Model({ generate }) {
+export default function Model({ data, tableData,signedIn,generate }) {
   const [open, setOpen] = React.useState(false);
   let history = useHistory();
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const save = async () => {
+    let details = {
+      ...data,
+      invoice_items: JSON.stringify(tableData),
+    };
+     await axios
+      .post(`${backend_url}/api/invoice/save`, details)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        // setError("Invalid email/password");
+      });
   };
 
   const handleClose = () => {
@@ -39,8 +57,8 @@ export default function Model({ generate }) {
 
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            By signing in save unlimited online invoices for your later
-            needs... It's completely free
+            By signing in save unlimited online invoices for your later needs...
+            It's completely free
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -55,7 +73,10 @@ export default function Model({ generate }) {
           </Button>
           <Button
             variant="outlined"
-            onClick={generate}
+            onClick={() => {
+              generate()
+              signedIn && save();
+            }}
             color="secondary"
             autoFocus
           >

@@ -1,34 +1,9 @@
-import { React, useState } from "react";
+import { React } from "react";
 import "./layout.scss";
 import { TextInput, TextAreaInput, Tablecomponent } from "../inputboxes/inputs";
 import { Row, Col, Container } from "react-bootstrap";
 
-const PdfLayout = ({ tableData, setTableData }) => {
-  const [data, setData] = useState({
-    companyname: "Your Company Name",
-    pdftitle: "INVOICE",
-    address1: "123 Your Street",
-    address2: "Your Townspos",
-    address3: "Address Line 3",
-    phno: "(123) 456 789",
-    email: "email@yourcompany.com",
-    date: "19-July-2021",
-    invoiceno: "Invoice #2334889",
-    ponumber: "PO 456001200",
-    attender: "Att: Ms. Jane Doe",
-    clientname: "Client Company Name",
-    maincontent: `
-        Dear Ms. Jane Doe,
-        Please find below a cost-breakdown for the recent work completed. 
-        Please make payment at your earliest convenience, and do not hesitate to contact me with any questions.                
-        
-        Many thanks,
-        Your Name`,
-    footcontent: `
-        Many thanks for your custom! I look forward to doing business with you again in due course.
- 
-        Payment terms: to be received within 60 days.`,
-  });
+const PdfLayout = ({  data, setData, tableData, setTableData }) => {
 
   return (
     <div  id="pdf" className="pdf">
