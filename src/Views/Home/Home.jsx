@@ -104,10 +104,10 @@ const Home = ({ signedIn }) => {
       })
       .catch((err) => {
         console.log(err);
+        setLoadingPdf(false);
       });
-  };
-
-  useEffect(() => {
+    };
+    
     const fetchData = async () => {
       setLoading(true);
       console.log(localStorage.getItem("invoice_use_data"));
@@ -124,6 +124,7 @@ const Home = ({ signedIn }) => {
           setInvoices(null);
         });
     };
+    useEffect(() => {
     signedIn && fetchData();
   }, [signedIn]);
 
@@ -139,14 +140,12 @@ const Home = ({ signedIn }) => {
                   ? "Loading..."
                   : invoices?.map((invoice, ind) => {
                       return (
-                        <>
                           <p
                             key={ind}
                             onClick={() => changeInvoice(invoice.id)}
                           >
                             {invoice.invoiceno}
                           </p>
-                        </>
                       );
                     })}
               </div>
@@ -166,6 +165,7 @@ const Home = ({ signedIn }) => {
               >
                 {({ toPdf }) => (
                   <Model
+                    fetchInvoices={fetchData}
                     signedIn={signedIn}
                     data={data}
                     tableData={tableData}

@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { backend_url } from "../../services/url";
 
-export default function Model({ data, tableData,signedIn,generate }) {
+export default function Model({ data,fetchInvoices, tableData,signedIn,generate }) {
   const [open, setOpen] = React.useState(false);
   let history = useHistory();
   const handleClickOpen = () => {
@@ -25,11 +25,12 @@ export default function Model({ data, tableData,signedIn,generate }) {
      await axios
       .post(`${backend_url}/api/invoice/save`, details)
       .then((res) => {
-        console.log(res);
+        handleClose();
+        fetchInvoices();
       })
       .catch((err) => {
         console.log(err);
-        // setError("Invalid email/password");
+        handleClose();
       });
   };
 
@@ -57,8 +58,8 @@ export default function Model({ data, tableData,signedIn,generate }) {
 
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-           {!signedIn ? <p>By signing in save unlimited online invoices for your later needs...
-            It's completely free</p> : <p>Download  your pdf for free</p> }
+           {!signedIn ? `By signing in save unlimited online invoices for your later needs...
+            It's completely free` : "Download  your pdf for free" }
           </DialogContentText>
         </DialogContent>
         <DialogActions>
